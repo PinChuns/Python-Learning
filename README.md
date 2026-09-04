@@ -274,21 +274,406 @@ print(sales2[1, 1])
 
 ---
 
-## pandas
+# Pandas
 
-Common functions and methods:
+## Import
 
-### Data Loading
+```python
+import pandas as pd
+```
 
-- `pd.read_csv()` — read a CSV file
-- `pd.read_excel()` — read an Excel file
+---
 
-### DataFrame
+## Series
 
-- `pd.DataFrame()` — create a DataFrame
-- `.head()` — view the first rows
-- `.tail()` — view the last rows
-- `.info()` — view DataFrame information
-- `.describe()` — view descriptive statistics
-- `.shape` — view the number of rows and columns
-- `.columns` — view column names
+A Pandas Series is a one-dimensional data structure with an index.
+
+Example:
+
+```python
+sales = pd.Series([120, 350, 80, 500, 250])
+
+print(sales)
+```
+
+Output:
+
+```text
+0    120
+1    350
+2     80
+3    500
+4    250
+dtype: int64
+```
+
+Pandas automatically creates an index starting from `0`.
+
+### Custom Index
+
+You can specify your own index labels:
+
+```python
+sales = pd.Series(
+    [120, 350, 80],
+    index=["Jan", "Feb", "Mar"]
+)
+
+print(sales)
+```
+
+Output:
+
+```text
+Jan    120
+Feb    350
+Mar     80
+```
+
+Access data by label:
+
+```python
+print(sales["Feb"])
+```
+
+Output:
+
+```text
+350
+```
+
+### Series Name
+
+A Series can have a name:
+
+```python
+sales = pd.Series(
+    [120, 350, 80],
+    index=["Jan", "Feb", "Mar"],
+    name="sales"
+)
+```
+
+---
+
+## DataFrame
+
+A DataFrame is a two-dimensional table made up of rows and columns.
+
+It can be thought of as multiple Series combined into a table.
+
+Example:
+
+```python
+data = {
+    "name": ["Alice", "Bob", "John"],
+    "city": ["Taipei", "London", "Tokyo"],
+    "sales": [850, 500, 720]
+}
+
+df = pd.DataFrame(data)
+
+print(df)
+```
+
+Output:
+
+```text
+    name    city  sales
+0  Alice  Taipei    850
+1    Bob  London    500
+2   John   Tokyo    720
+```
+
+### Select a Column
+
+Select one column:
+
+```python
+print(df["name"])
+```
+
+Selecting one column returns a Series.
+
+```text
+DataFrame
+    ↓
+df["name"]
+    ↓
+Series
+```
+
+### Series vs DataFrame
+
+```text
+Series
+→ one column of data
+
+DataFrame
+→ multiple columns / a table
+```
+
+---
+
+## DataFrame Basic Information
+
+### `.shape`
+
+View the number of rows and columns:
+
+```python
+print(df.shape)
+```
+
+Example output:
+
+```text
+(3, 3)
+```
+
+This means:
+
+```text
+3 rows
+3 columns
+```
+
+### `.columns`
+
+View the column names:
+
+```python
+print(df.columns)
+```
+
+Example output:
+
+```text
+Index(['name', 'city', 'sales'], dtype='object')
+```
+
+### `.head()`
+
+View the first rows of a DataFrame.
+
+```python
+print(df.head())
+```
+
+By default, `.head()` shows the first 5 rows.
+
+You can specify the number of rows:
+
+```python
+print(df.head(2))
+```
+
+This shows the first 2 rows.
+
+---
+
+## DataFrame Calculations
+
+Select a column and use a method to calculate values.
+
+Example:
+
+```python
+print(df["sales"].mean())
+```
+
+Output:
+
+```text
+690.0
+```
+
+Important:
+
+```python
+.mean
+```
+
+refers to the method itself.
+
+```python
+.mean()
+```
+
+calls / executes the method.
+
+```text
+.mean
+→ the method
+
+.mean()
+→ execute the method
+```
+
+---
+
+# Pandas Data Filtering
+
+Pandas can filter rows based on conditions.
+
+This is similar to SQL `WHERE`.
+
+### Single Condition
+
+SQL:
+
+```sql
+SELECT *
+FROM table
+WHERE sales >= 700;
+```
+
+Pandas:
+
+```python
+df[df["sales"] >= 700]
+```
+
+The condition:
+
+```python
+df["sales"] >= 700
+```
+
+produces a Boolean Series:
+
+```text
+True
+False
+True
+```
+
+Pandas keeps the rows where the condition is `True`.
+
+---
+
+## Multiple Conditions
+
+Pandas uses:
+
+- `&` — AND
+- `|` — OR
+
+### AND
+
+SQL:
+
+```sql
+WHERE sales >= 700
+AND city = 'Taipei'
+```
+
+Pandas:
+
+```python
+df[
+    (df["sales"] >= 700)
+    &
+    (df["city"] == "Taipei")
+]
+```
+
+### OR
+
+SQL:
+
+```sql
+WHERE sales >= 700
+OR city = 'London'
+```
+
+Pandas:
+
+```python
+df[
+    (df["sales"] >= 700)
+    |
+    (df["city"] == "London")
+]
+```
+
+### Important Rule
+
+When using multiple conditions in Pandas:
+
+**Each condition must be wrapped in `()` parentheses.**
+
+Use:
+
+```python
+(condition1) & (condition2)
+```
+
+or:
+
+```python
+(condition1) | (condition2)
+```
+
+Do not directly use Python's `and` / `or` for Pandas Series conditions.
+
+Why?
+
+Because Pandas conditions produce a whole Series of `True` / `False` values, so Pandas needs to perform the logical operation element by element.
+
+Example:
+
+```text
+Condition 1     Condition 2       AND (&)
+
+True            True              → True
+False           False             → False
+True            False             → False
+```
+
+---
+
+## Select Multiple Columns
+
+Select one column:
+
+```python
+df["name"]
+```
+
+→ returns a Series.
+
+Select multiple columns:
+
+```python
+df[["name", "city", "sales"]]
+```
+
+→ returns a DataFrame.
+
+The inner `[]` is a Python list of column names.
+
+```text
+One column:
+
+df["sales"]
+→ Series
+
+
+Multiple columns:
+
+df[["name", "city", "sales"]]
+→ DataFrame
+```
+
+The number of selected columns does not determine the number of brackets.
+
+```python
+df[["name", "city"]]
+
+df[["name", "city", "sales"]]
+
+df[["name", "city", "sales", "age"]]
+```
+
+All use two levels of `[]`.
