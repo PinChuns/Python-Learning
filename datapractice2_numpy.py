@@ -61,3 +61,4 @@ nums2 = np.array([
 ])
 print(nums2.shape)
 print(nums2[1, 1])
+
