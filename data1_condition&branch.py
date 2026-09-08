@@ -99,5 +99,3 @@ year1 = 1983
 if (year1 > 1979) and (year1 <1990):
     print("it's in 80's.")
 
-
-
