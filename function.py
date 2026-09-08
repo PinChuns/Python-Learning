@@ -107,15 +107,3 @@ def PF():
     return CS
 PF()
 print(CS)  #45 million
-
-
-
-
-
-
-
-
-
-
-
-
