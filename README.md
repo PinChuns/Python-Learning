@@ -1,4 +1,4 @@
-```
+
 # Python Learning
 
 My Python learning notes and practice for Data Analytics and Python fundamentals.
@@ -272,4 +272,3 @@ My Python learning notes and practice for Data Analytics and Python fundamentals
 - [ ] Exploratory Data Analysis
 - [ ] SQL
 - [ ] Data Analytics Projects
-```
