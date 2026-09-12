@@ -18,7 +18,7 @@ print(B)
 
 
 # Tuple: Python的tuple（元組）是一種內建的有序資料結構，
-
+#(有順序的不可動列表)
 #基本語法：使用小括號 () 包裹元素，並用逗號（,）分隔。
 my_tuple = (1, 2, 3.6, "apple")  
 print(my_tuple)
@@ -56,7 +56,7 @@ NT = (1, 2, ("pop", "rock"), (3, 4), ("disco", (1, 2)))
 print(NT[2])  # ans:("pop", "rock")
 print(NT[2][1]) # ans:rock
 
-# List : list are mutable可變的
+# List : list are mutable可變的(有順序的可動列表)
 L = ["Serena Lee", 8.21, 2025]
 print(L)
 print(L[0])
